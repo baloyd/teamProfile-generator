@@ -4,7 +4,7 @@ const fs=require("fs");
 const jest = require("./node_modules/jest")
 
 //An array of questions for user input to populate the html file
-questions=[
+inquirer.prompt([
     {
     type:"input",
     name:"manager",
@@ -22,16 +22,20 @@ questions=[
     name:"officeNumber",
     message:'What is your team managers office number?'
  },{
+    type:"list",
+    name:"addMember",
+    message:"Which type of team member would you like to add?",
+    choice:["Engineer", "Intern", "I don't want to add any more team members"]
 
  }
-   ];
-   inquirer.prompt(questions).then(data=>{
+   ].then(data=>{
       console.log(data)
       
       writeToFile("index.html",data,error =>{
          
       })
-    });
+    })
+);
 
     //variable that will hold the html markdown for the website to be generated.
     const html=`<!DOCTYPE html>
