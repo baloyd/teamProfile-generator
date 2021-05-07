@@ -8,34 +8,113 @@ inquirer.prompt([
     {
     type:"input",
     name:"manager",
-    message:'What is your team managers name?'
+    message:"What is your team manager's name?"
  },{
     type:"input",
     name:"mgreeid",
-    message:'What is your team managers employee ID?'
+    message:"What is your team manager's employee ID?"
  },{
     type:"input",
     name:"mgrEmailAddress",
-    message:'What is your team managers email address?'
+    message:"What is your team manager's email address?"
  },{
     type:"input",
     name:"officeNumber",
-    message:'What is your team managers office number?'
+    message:"What is your team manager's office number?"
  },{
     type:"list",
     name:"addMember",
     message:"Which type of team member would you like to add?",
-    choice:["Engineer", "Intern", "I don't want to add any more team members"]
+    choices:["Engineer", "Intern", "I don't want to add any more team members"]
 
- }
-   ].then(data=>{
-      console.log(data)
-      
-      writeToFile("index.html",data,error =>{
+ }]).then(data=>{
+   console.log(data)
+   if (data.addMember === "Engineer"){
+      addEngineer();
+   }else if (data.addMember === "Intern"){
+      addIntern();
+   }else  writeToFile("README1.md",data,error =>{
          
-      })
-    })
-);
+   })
+
+   function addEngineer() {
+      inquirer.prompt([{
+         type:"input",
+       name:"engineer",
+       message:"What is your engineer's name?"
+    },{
+       type:"input",
+       name:"engEEid",
+       message:"What is your engineer's employee ID?"
+    },{
+       type:"input",
+       name:"engEmailAddress",
+       message:"What is your engineer's email address?"
+    },{
+       type:"input",
+       name:"github",
+       message:"What is your engineer's Github?"
+    },{
+       type:"list",
+       name:"addMember",
+       message:"Which type of team member would you like to add?",
+       choices:["Engineer", "Intern", "I don't want to add any more team members"]
+   
+    }]).then(data=>{
+      console.log(data)
+      if (data.addMember === "Engineer"){
+         addEngineer();
+      }else if (data.addMember === "Intern"){
+         addIntern();
+   }else  writeToFile("README1.md",data,error =>{
+         
+   })
+
+   function addIntern(){
+      inquirer.prompt([{
+         type:"input",
+       name:"intern",
+       message:"What is your intern's name?"
+    },{
+       type:"input",
+       name:"intEEid",
+       message:"What is your intern's employee ID?"
+    },{
+       type:"input",
+       name:"intEmailAddress",
+       message:"What is your intern's email address?"
+    },{
+       type:"input",
+       name:"school",
+       message:"What school does your intern go to?"
+    },{
+       type:"list",
+       name:"addMember",
+       message:"Which type of team member would you like to add?",
+       choices:["Engineer", "Intern", "I don't want to add any more team members"]
+   
+    }]).then(data=>{
+      console.log(data)
+      if (data.addMember === "Engineer"){
+         addEngineer();
+      }else if (data.addMember === "Intern"){
+         addIntern();
+      
+   }else  writeToFile("README1.md",data,error =>{
+         
+   })
+});
+
+
+// A function to write html file
+function writeToFile(fileName, data, error) {
+   fs.writeFile("team-generator.html",html,error =>{
+      if (error){
+         return console.log(error);
+      }
+      console.log("README created successfully!")
+   })
+}
 
     //variable that will hold the html markdown for the website to be generated.
     const html=`<!DOCTYPE html>
@@ -64,12 +143,3 @@ inquirer.prompt([
 </body>
 </html>`;
 
-// A function to write html file
-function writeToFile(fileName, data, error) {
-   fs.writeFile("README1.md",html,error =>{
-      if (error){
-         return console.log(error);
-      }
-      console.log("README created successfully!")
-   })
-}
