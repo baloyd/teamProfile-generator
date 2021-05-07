@@ -112,7 +112,7 @@ function writeToFile(fileName, data, error) {
       if (error){
          return console.log(error);
       }
-      console.log("README created successfully!")
+      console.log("website created successfully!")
    })
 }
 
