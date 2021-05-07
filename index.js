@@ -33,9 +33,8 @@ inquirer.prompt([
       addEngineer();
    }else if (data.addMember === "Intern"){
       addIntern();
-   }else  writeToFile("README1.md",data,error =>{
-         
-   })
+   }else { writeToFile("team-generator.html",html,error)}
+});
 
    function addEngineer() {
       inquirer.prompt([{
@@ -66,9 +65,8 @@ inquirer.prompt([
          addEngineer();
       }else if (data.addMember === "Intern"){
          addIntern();
-   }else  writeToFile("README1.md",data,error =>{
-         
-   })
+   }else { writeToFile("team-generator.html",html,error)}
+});
 
    function addIntern(){
       inquirer.prompt([{
@@ -100,9 +98,7 @@ inquirer.prompt([
       }else if (data.addMember === "Intern"){
          addIntern();
       
-   }else  writeToFile("README1.md",data,error =>{
-         
-   })
+   }else { writeToFile("team-generator.html",html,error)}
 });
 
 
