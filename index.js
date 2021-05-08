@@ -1,4 +1,9 @@
 //Packages needed for the application
+const Employee = require("./lib/Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+
 const inquirer = require("./node_modules/inquirer")
 const fs = require("fs");
 const jest = require("./node_modules/jest")
@@ -35,14 +40,14 @@ inquirer.prompt([
          addIntern();
       } else {
          console.log(data)
-         writeToFile("team-generator.html", html, error=>{
+         writeToFile("team-generator.html", generateHTML (data), error=>{
          
          })
       }
    });
 
 
-//function to add engineer add engineer 
+//function to add engineer  
 function addEngineer() {
    inquirer.prompt([{
       type: "input",
@@ -73,7 +78,7 @@ function addEngineer() {
          addIntern();
       } else {
          console.log(data)
-         writeToFile("team-generator.html", html, error=>{
+         writeToFile("team-generator.html", generateHTML (data), error=>{
          
          })
       }
@@ -111,7 +116,7 @@ function addIntern() {
 
       } else {
          console.log(data)
-         writeToFile("team-generator.html", html, error=>{
+         writeToFile("team-generator.html", generateHTML (data), error=>{
          
          })
       }
@@ -121,7 +126,19 @@ function addIntern() {
 let html = " "
 // A function to write html file
 function writeToFile(fileName, data, error) {
-   const html=`<!DOCTYPE html>
+   
+
+
+   fs.writeFile("team-generator.html", generateHTML (data), error => {
+      if (error) {
+         return console.log(error);
+      }
+      console.log("website created successfully!")
+   })
+}
+
+function generateHTML (data){
+`<!DOCTYPE html>
    <html lang="en">
      <head>
        <meta charset="UTF-8" />
@@ -158,15 +175,4 @@ function writeToFile(fileName, data, error) {
 </div>
 </body>
 </html>`;
-
-
-   fs.writeFile("team-generator.html", html, error => {
-      if (error) {
-         return console.log(error);
-      }
-      console.log("website created successfully!")
-   })
 }
-
-
-   
