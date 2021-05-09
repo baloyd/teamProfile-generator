@@ -43,7 +43,9 @@ inquirer.prompt([
          writeToFile("team-generator.html", generateHTML (data), error=>{
          
          })
+         
       }
+      
    });
 
 
@@ -129,7 +131,7 @@ function writeToFile(fileName, data, error) {
    
 
 
-   fs.writeFile("team-generator.html", generateHTML (data), error => {
+   fs.writeFile("team-generator.html", data, error => {
       if (error) {
          return console.log(error);
       }
@@ -137,8 +139,8 @@ function writeToFile(fileName, data, error) {
    })
 }
 
-function generateHTML (data){
-`<!DOCTYPE html>
+function generateHTML (data){ 
+return `<!DOCTYPE html>
    <html lang="en">
      <head>
        <meta charset="UTF-8" />
@@ -168,9 +170,29 @@ function generateHTML (data){
   <p class="card-text">Manager</p>
 </div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">${data.mgrEEid}</li>
-  <li class="list-group-item">${data.mgrEmailAddress}</li>
-  <li class="list-group-item">${data.officeNumber}</li>
+  <li class="list-group-item">Employee ID: ${data.mgrEEid}</li>
+  <li class="list-group-item">Email: ${data.mgrEmailAddress}</li>
+  <li class="list-group-item">Office #: ${data.officeNumber}</li>
+</ul>
+</div>
+<div class="card-body">
+<h5 class="card-title">${data.engineer}</h5>
+  <p class="card-text">Engineer</p>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">Employee ID: ${data.engEEid}</li>
+  <li class="list-group-item">Email: ${data.engEmailAddress}</li>
+  <li class="list-group-item">Github: ${data.Github}</li>
+</ul>
+</div>
+<div class="card-body">
+<h5 class="card-title">${data.intern}</h5>
+  <p class="card-text">Intern</p>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">Employee ID: ${data.intEEid}</li>
+  <li class="list-group-item">Email: ${data.intEmailAddress}</li>
+  <li class="list-group-item">Github: ${data.Github}</li>
 </ul>
 </div>
 </body>
