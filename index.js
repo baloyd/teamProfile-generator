@@ -3,11 +3,12 @@ const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
-
 const inquirer = require("./node_modules/inquirer")
 const fs = require("fs");
-const jest = require("./node_modules/jest")
 
+
+//array that will hold the information of each team member as its created
+const employees = [ ]
 //An array of questions for user input to populate the html file
 
 inquirer.prompt([
@@ -34,13 +35,19 @@ inquirer.prompt([
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
+      //creates a new instance of Manager with the information retrieved from the prompt and pushes it to the employee array
+      employees.push(new Manager (data.manager, data.mgrEEid, data.mgrEmailAddress, data.officeNumber))
+      //if user chooses to add an Engineer, then the addEngineer function will run
       if (data.addMember === "Engineer") {
+         
        return  addEngineer();
+       //if user chooses to add an Intern, then the addIntern function will run
       } else if (data.addMember === "Intern") {
-        return addIntern(data);
+        return addIntern();
       } else {
-         console.log()
-         writeToFile("team-generator.html", generateHTML (data), error=>{
+         console.log(employees)
+         //creates an html file named team-generator using the generateHTML function that holds the markdown by passing the employees array to populate the corresponding fields
+         writeToFile("team-generator.html", generateHTML (employees), error=>{
          
          })
          
@@ -74,13 +81,14 @@ function addEngineer() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
+      employees.push(new Engineer (data.engineer, data.engEEid, data.engEmailAddress, data.github))
       if (data.addMember === "Engineer") {
-       return  addEngineer();
+        return addEngineer();
       } else if (data.addMember === "Intern") {
-        return addIntern();
+       return addIntern();
       } else {
-         console.log(data)
-         writeToFile("team-generator.html", generateHTML (data), error=>{
+         console.log(employees)
+         writeToFile("team-generator.html", generateHTML (employees), error=>{
          
          })
       }
@@ -111,27 +119,28 @@ function addIntern() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
+      employees.push(new Intern (data.intern, data.intEEid, data.intEmailAddress, data.school))
       if (data.addMember === "Engineer") {
-        return addEngineer();
+        addEngineer();
       } else if (data.addMember === "Intern") {
-        return addIntern();
+        addIntern();
 
       } else {
-         console.log(data)
-         writeToFile("team-generator.html", generateHTML (data), error=>{
+         console.log(employees)
+         writeToFile("team-generator.html", generateHTML (employees), error=>{
          
          })
       }
    });
 }
 
-let html = " "
+
 // A function to write html file
 function writeToFile(fileName, data, error) {
    
 
 
-   fs.writeFile("team-generator.html", data, error => {
+   fs.writeFile("team-generator.html", generateHTML(employees), error => {
       if (error) {
          return console.log(error);
       }
@@ -139,7 +148,8 @@ function writeToFile(fileName, data, error) {
    })
 }
 
-function generateHTML (data){ 
+//function that holds html markdown
+function generateHTML (employees){ 
 return `<!DOCTYPE html>
    <html lang="en">
      <head>
@@ -166,33 +176,33 @@ return `<!DOCTYPE html>
      <div class="card" style="width: 18rem;">
 
 <div class="card-body">
-  <h5 class="card-title">${data.manager}</h5>
+  <h5 class="card-title">${employees.name}</h5>
   <p class="card-text">Manager</p>
 </div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${data.mgrEEid}</li>
-  <li class="list-group-item">Email: ${data.mgrEmailAddress}</li>
-  <li class="list-group-item">Office #: ${data.officeNumber}</li>
+  <li class="list-group-item">Employee ID: ${employees.id}</li>
+  <li class="list-group-item">Email: ${employees.email}</li>
+  <li class="list-group-item">Office #: ${employees.officeNumber}</li>
 </ul>
 </div>
 <div class="card-body">
-<h5 class="card-title">${data.engineer}</h5>
+<h5 class="card-title">${employees.engineer}</h5>
   <p class="card-text">Engineer</p>
 </div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${data.engEEid}</li>
-  <li class="list-group-item">Email: ${data.engEmailAddress}</li>
-  <li class="list-group-item">Github: ${data.github}</li>
+  <li class="list-group-item">Employee ID: ${employees.engEEid}</li>
+  <li class="list-group-item">Email: ${employees.engEmailAddress}</li>
+  <li class="list-group-item">Github: ${employees.github}</li>
 </ul>
 </div>
 <div class="card-body">
-<h5 class="card-title">${data.intern}</h5>
+<h5 class="card-title">${employees.intern}</h5>
   <p class="card-text">Intern</p>
 </div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${data.intEEid}</li>
-  <li class="list-group-item">Email: ${data.intEmailAddress}</li>
-  <li class="list-group-item">Github: ${data.Github}</li>
+  <li class="list-group-item">Employee ID: ${employees.intEEid}</li>
+  <li class="list-group-item">Email: ${employees.intEmailAddress}</li>
+  <li class="list-group-item">Github: ${employees.school}</li>
 </ul>
 </div>
 </body>
