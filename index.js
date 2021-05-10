@@ -1,5 +1,4 @@
 //Packages needed for the application
-const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
@@ -36,7 +35,7 @@ inquirer.prompt([
 
    }]).then(data => {
       //creates a new instance of Manager with the information retrieved from the prompt and pushes it to the employee array
-      employees.push(new Manager (data.manager, data.mgrEEid, data.mgrEmailAddress, data.officeNumber))
+      employees.push(new Manager (data.manager, data.mgrEEid, data.mgrEmailAddress, data.officeNumber, data.title))
       //if user chooses to add an Engineer, then the addEngineer function will run
       if (data.addMember === "Engineer") {
          
@@ -81,13 +80,13 @@ function addEngineer() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
-      employees.push(new Engineer (data.engineer, data.engEEid, data.engEmailAddress, data.github))
+      employees.push(new Engineer (data.engineer, data.engEEid, data.engEmailAddress, data.github, data.title))
       if (data.addMember === "Engineer") {
         return addEngineer();
       } else if (data.addMember === "Intern") {
        return addIntern();
       } else {
-         console.log(employees)
+
          writeToFile("team-generator.html", generateHTML (employees), error=>{
          
          })
@@ -119,7 +118,7 @@ function addIntern() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
-      employees.push(new Intern (data.intern, data.intEEid, data.intEmailAddress, data.school))
+      employees.push(new Intern (data.intern, data.intEEid, data.intEmailAddress, data.school, data.title))
       if (data.addMember === "Engineer") {
         addEngineer();
       } else if (data.addMember === "Intern") {
@@ -148,6 +147,46 @@ function writeToFile(fileName, data, error) {
    })
 }
 
+// will show the specific information when the card is created attributed to each role depending on the role of the employee from the array
+function titleInfo(employees) {
+   if (employees.title === "Manager") {
+       console.log(employees.officeNumber);
+       return `Office #: ${employees.officeNumber}`;
+   }
+
+   if (employees.title === "Intern") {
+       return `School: ${employees.school}`;
+   }
+
+   if (employees.title === "Engineer") {
+       return `GitHub:<a href="https://github.com/${employees.github}"> ${employees.github}</a>`;
+   }
+}
+
+//will loop through the final array of employees and generate the html for each specific employee by populating the fields accordingly.
+function getCardHTML() {
+   let html = "";
+   for (i = 0; i < employees.length; i++) {
+       html += `<div class="card mt-4 justify-content-center bg-info text-light shadow" style="width: 18rem;">
+           <div class="col card-header">
+               <h4>${employees[i].name}</h4>
+               <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+               <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+             </svg> <u>${employees[i].title}</u></p>
+           </div>
+           
+           <ul class="list-group list-group-flush text-secondary">
+               <li class="list-group-item">ID: ${employees[i].id}</li>
+               <li class="list-group-item">Email:<a href="mailto:${employees[i].email}"> ${employees[i].email}</a></li>
+               <li class="list-group-item"> ${titleInfo(employees[i])}</li>
+           </ul>
+       </div > `;
+   }
+   return html;
+}
+
+
 //function that holds html markdown
 function generateHTML (employees){ 
 return `<!DOCTYPE html>
@@ -170,40 +209,16 @@ return `<!DOCTYPE html>
      </head>
      <div class="container-fluid">
      <div class="row">
-   <div class="col-12 jumbotron p-2 d-flex align-items-center justify-content-center m-0 .bg-danger">
-       <h1 class="display-4 ">My Team</h1> </div></div></div>
+   <div class="col-12 jumbotron p-2 d-flex align-items-center justify-content-center m-0 bg-warning">
+       <h1 class="display-4 text-light">My Team</h1> </div></div></div>
      <body>
-     <div class="card" style="width: 18rem;">
+     
+<div class ="container-fluid p-2">
+<div class="row d-flex  justify-content-around">
 
-<div class="card-body">
-  <h5 class="card-title">${employees.name}</h5>
-  <p class="card-text">Manager</p>
+${getCardHTML()}
+
 </div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${employees.id}</li>
-  <li class="list-group-item">Email: ${employees.email}</li>
-  <li class="list-group-item">Office #: ${employees.officeNumber}</li>
-</ul>
-</div>
-<div class="card-body">
-<h5 class="card-title">${employees.engineer}</h5>
-  <p class="card-text">Engineer</p>
-</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${employees.engEEid}</li>
-  <li class="list-group-item">Email: ${employees.engEmailAddress}</li>
-  <li class="list-group-item">Github: ${employees.github}</li>
-</ul>
-</div>
-<div class="card-body">
-<h5 class="card-title">${employees.intern}</h5>
-  <p class="card-text">Intern</p>
-</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">Employee ID: ${employees.intEEid}</li>
-  <li class="list-group-item">Email: ${employees.intEmailAddress}</li>
-  <li class="list-group-item">Github: ${employees.school}</li>
-</ul>
 </div>
 </body>
 </html>`;
