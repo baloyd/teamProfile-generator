@@ -35,11 +35,11 @@ inquirer.prompt([
 
    }]).then(data => {
       if (data.addMember === "Engineer") {
-         addEngineer();
+       return  addEngineer();
       } else if (data.addMember === "Intern") {
-         addIntern();
+        return addIntern(data);
       } else {
-         console.log(data)
+         console.log()
          writeToFile("team-generator.html", generateHTML (data), error=>{
          
          })
@@ -51,7 +51,7 @@ inquirer.prompt([
 
 //function to add engineer  
 function addEngineer() {
-   inquirer.prompt([{
+   return inquirer.prompt([{
       type: "input",
       name: "engineer",
       message: "What is your engineer's name?"
@@ -75,9 +75,9 @@ function addEngineer() {
 
    }]).then(data => {
       if (data.addMember === "Engineer") {
-         addEngineer();
+       return  addEngineer();
       } else if (data.addMember === "Intern") {
-         addIntern();
+        return addIntern();
       } else {
          console.log(data)
          writeToFile("team-generator.html", generateHTML (data), error=>{
@@ -88,7 +88,7 @@ function addEngineer() {
 }
 // function to add intern
 function addIntern() {
-   inquirer.prompt([{
+  return inquirer.prompt([{
       type: "input",
       name: "intern",
       message: "What is your intern's name?"
@@ -112,9 +112,9 @@ function addIntern() {
 
    }]).then(data => {
       if (data.addMember === "Engineer") {
-         addEngineer();
+        return addEngineer();
       } else if (data.addMember === "Intern") {
-         addIntern();
+        return addIntern();
 
       } else {
          console.log(data)
@@ -182,7 +182,7 @@ return `<!DOCTYPE html>
 <ul class="list-group list-group-flush">
   <li class="list-group-item">Employee ID: ${data.engEEid}</li>
   <li class="list-group-item">Email: ${data.engEmailAddress}</li>
-  <li class="list-group-item">Github: ${data.Github}</li>
+  <li class="list-group-item">Github: ${data.github}</li>
 </ul>
 </div>
 <div class="card-body">
