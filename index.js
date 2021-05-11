@@ -147,7 +147,7 @@ function writeToFile(fileName, data, error) {
    })
 }
 
-// will show the specific information when the card is created attributed to each role depending on the role of the employee from the array
+// will show the specific information when the card is created attributed to each role depending on the title of the employee from the array
 function titleInfo(employees) {
    if (employees.title === "Manager") {
        console.log(employees.officeNumber);
