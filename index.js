@@ -35,7 +35,7 @@ inquirer.prompt([
 
    }]).then(data => {
       //creates a new instance of Manager with the information retrieved from the prompt and pushes it to the employee array
-      employees.push(new Manager (data.manager, data.mgrEEid, data.mgrEmailAddress, data.officeNumber, data.title))
+      employees.push(new Manager (data.manager, data.mgrEEid, data.mgrEmailAddress, data.officeNumber, data.role))
       //if user chooses to add an Engineer, then the addEngineer function will run
       if (data.addMember === "Engineer") {
          
@@ -80,7 +80,7 @@ function addEngineer() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
-      employees.push(new Engineer (data.engineer, data.engEEid, data.engEmailAddress, data.github, data.title))
+      employees.push(new Engineer (data.engineer, data.engEEid, data.engEmailAddress, data.github, data.role))
       if (data.addMember === "Engineer") {
         return addEngineer();
       } else if (data.addMember === "Intern") {
@@ -118,7 +118,7 @@ function addIntern() {
       choices: ["Engineer", "Intern", "I don't want to add any more team members"]
 
    }]).then(data => {
-      employees.push(new Intern (data.intern, data.intEEid, data.intEmailAddress, data.school, data.title))
+      employees.push(new Intern (data.intern, data.intEEid, data.intEmailAddress, data.school, data.role))
       if (data.addMember === "Engineer") {
         addEngineer();
       } else if (data.addMember === "Intern") {
@@ -147,18 +147,18 @@ function writeToFile(fileName, data, error) {
    })
 }
 
-// will show the specific information when the card is created attributed to each role depending on the title of the employee from the array
-function titleInfo(employees) {
-   if (employees.title === "Manager") {
+// will show the specific information when the card is created attributed to each role depending on the role of the employee from the array
+function roleInfo(employees) {
+   if (employees.role === "Manager") {
        console.log(employees.officeNumber);
        return `Office #: ${employees.officeNumber}`;
    }
 
-   if (employees.title === "Intern") {
+   if (employees.role === "Intern") {
        return `School: ${employees.school}`;
    }
 
-   if (employees.title === "Engineer") {
+   if (employees.role === "Engineer") {
        return `GitHub:<a href="https://github.com/${employees.github}"> ${employees.github}</a>`;
    }
 }
@@ -173,13 +173,13 @@ function getCardHTML() {
                <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-             </svg> <u>${employees[i].title}</u></p>
+             </svg> <u>${employees[i].role}</u></p>
            </div>
            
            <ul class="list-group list-group-flush text-secondary">
                <li class="list-group-item">ID: ${employees[i].id}</li>
                <li class="list-group-item">Email:<a href="mailto:${employees[i].email}"> ${employees[i].email}</a></li>
-               <li class="list-group-item"> ${titleInfo(employees[i])}</li>
+               <li class="list-group-item"> ${roleInfo(employees[i])}</li>
            </ul>
        </div > `;
    }
